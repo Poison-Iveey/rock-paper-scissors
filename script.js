@@ -1,66 +1,100 @@
+var humanScore = 0;
+var computerScore = 0;
+const userScore_span = document.getElementById("user-score");
+const computerScore_span = document.getElementById("computer-score");
+const scoreBoard_div = document.querySelector(".score-board");
+const rock_div = document.getElementById('rock_div');
+const paper_div = document.getElementById('paper_div');
+const scissors = document.getElementById('scissors');
+const results = document.querySelector("#result");
 
 
-const choices=["rock","paper","scissors"]
 
 function getComputerChoice() {
-   const computerChoice = choices[Math.floor(Math.random()*3)];
-   console.log(computerChoice);
+   const choices=["rock","paper","scissors"]
+   const computerChoice = Math.floor(Math.random()*3);
+   return choices[computerChoice];
    
 }
 
-function getHumanChoice() {
-   var humanChoice = prompt("Your Turn! Enter rock,paper or scissors in lowercase");
 
-    if ( humanChoice ==  "rock" || humanChoice == "paper" || humanChoice ==  "scissors" 
-        || humanChoice == null ) {
-      txt = "computer's turn next";
+
+function win(computerSelection,playerSelection) {
+   humanScore++;
+   userScore_span.innerHTML = humanScore;
+   computerScore_span.innerHTML = computerScore;
+   results.textContent = "YOU WIN!";
+   
+   
+}
+
+function lose(computerSelection, playerSelection){
+   computerScore++;
+   userScore_span.innerHTML = humanScore;
+   computerScore_span.innerHTML = computerScore;
+   results.textContent = "YOU LOSE...";
+   
+
+}
+
+function draw( computerSelection, playerSelection){
+   results.textContent = "DRAWWW!";
+
+
+}
+
+
+
+
+function game(playerSelection){
+   const computerSelection = getComputerChoice();
+   switch (playerSelection + computerSelection){
+      case "rockscissors":
+      case "paperrock":
+      case "scissorspaper":
+         win(computerSelection,playerSelection);
+         break;
+      case "rockpaper":
+      case "paperscissors":
+      case "scissorsrock":
+         lose(computerSelection, playerSelection);
+         break;
+      case "rockrock":
+      case "paperpaper":
+      case "scissorsscissors":
+         draw(computerSelection, playerSelection);
+         break;
+   }
+}
+
+
+  
+function main(){
+   rock_div.addEventListener('click', function() {
+      game("rock")
       
-   }
-   else {
-      txt = "Invalid choice!";
-   }
-   alert(txt);
+   });
 
-  console.log(humanChoice);
+   paper_div.addEventListener('click', function(){
+      game("paper")
+   });
+
+   scissors_div.addEventListener('click', function(){
+      game("scissors")
+   });
 }
 
+   main();
 
 
-var humanScore = 0;
-var computerScore = 0;
+   
 
-function playRound(humanChoice,computerChoice) {
-   if ( humanChoice == computerChoice){
-      console.log('It\'s a tie!');
 
-   }else if (( humanChoice == "paper"&& computerChoice == "scissors")||
-              ( humanChoice == "scissors" && computerChoice == "rock")||
-              (humanChoice ==  "rock"&& computerChoice == "paper" )){
-         console.log('You Lose!')
-         computerScore++;
 
-  }else if ((humanChoice == "paper" && computerChoice == "rock")
-         || (humanChoice == "scissors" && computerChoice == "paper")
-         || (humanChoice == "rock" && computerChoice == "scissors")){
-            console.log('You Win!')
-            humanScore++;
-         }
 
-      return humanScore, computerScore
-              
-   }
+  
 
-function playGame(x){
-   for (let i=0; i<x; i++){
-      playRound(getHumanChoice(),getComputerChoice())
-   }
 
-   return humanScore, computerScore
-}
-
-  playGame(5);
-  console.log(humanScore);
-  console.log(computerScore);
    
 
 
